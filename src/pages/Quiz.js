@@ -18,7 +18,19 @@ const Quiz = () => {
       {questions.length > 0 ? (
         <ul>
           {questions.map((question, index) => (
-            <li key={index}>{question.question}</li>
+            <li key={index}>
+              <p>{question.question}</p>
+              <ul>
+                {Object.entries(question.answers).map(([key, answer]) =>
+                  answer ? ( // Some answers may be null
+                    <li key={key}>
+                      <input type="radio" name={`question-${index}`} />
+                      {answer}
+                    </li>
+                  ) : null
+                )}
+              </ul>
+            </li>
           ))}
         </ul>
       ) : (
