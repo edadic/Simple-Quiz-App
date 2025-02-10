@@ -3,6 +3,7 @@ import { fetchQuizQuestions } from "../services/quizService";
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
+  const [userAnswers, setUserAnswers] = useState({}); // Store user-selected answers
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -11,6 +12,13 @@ const Quiz = () => {
     };
     getQuestions();
   }, []);
+
+  const handleAnswerSelect = (questionIndex, answerKey) => {
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionIndex]: answerKey,
+    }));
+  };
 
   return (
     <div>
@@ -22,10 +30,18 @@ const Quiz = () => {
               <p>{question.question}</p>
               <ul>
                 {Object.entries(question.answers).map(([key, answer]) =>
-                  answer ? ( // Some answers may be null
+                  answer ? (
                     <li key={key}>
-                      <input type="radio" name={`question-${index}`} />
-                      {answer}
+                      <label>
+                        <input
+                          type="radio"
+                          name={`question-${index}`}
+                          value={key}
+                          checked={userAnswers[index] === key}
+                          onChange={() => handleAnswerSelect(index, key)}
+                        />
+                        {answer}
+                      </label>
                     </li>
                   ) : null
                 )}
