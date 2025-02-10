@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchQuizQuestions } from "../services/quizService";
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
-  const [userAnswers, setUserAnswers] = useState({}); // Store user-selected answers
+  const [userAnswers, setUserAnswers] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -18,6 +20,17 @@ const Quiz = () => {
       ...prevAnswers,
       [questionIndex]: answerKey,
     }));
+  };
+
+  const handleSubmit = () => {
+    let score = 0;
+    questions.forEach((question, index) => {
+      if (userAnswers[index] === question.correct_answer) {
+        score++;
+      }
+    });
+
+    navigate("/results", { state: { score, total: questions.length } });
   };
 
   return (
@@ -52,6 +65,8 @@ const Quiz = () => {
       ) : (
         <p>Loading questions...</p>
       )}
+
+      <button onClick={handleSubmit}>Submit Quiz</button>
     </div>
   );
 };
