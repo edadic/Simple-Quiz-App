@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { fetchQuizQuestions } from "../services/quizService";
 
-function Quiz() {
+const Quiz = () => {
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const getQuestions = async () => {
+      const data = await fetchQuizQuestions();
+      setQuestions(data);
+    };
+    getQuestions();
+  }, []);
+
   return (
     <div>
-      <h1>Quiz Page</h1>
-      <p>Questions will appear here.</p>
+      <h2>Quiz Page</h2>
+      {questions.length > 0 ? (
+        <ul>
+          {questions.map((question, index) => (
+            <li key={index}>{question.question}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Loading questions...</p>
+      )}
     </div>
   );
-}
+};
 
 export default Quiz;
