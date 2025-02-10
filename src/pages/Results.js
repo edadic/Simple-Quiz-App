@@ -1,3 +1,4 @@
+import "../styles/Results.css";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,12 +8,16 @@ const Results = () => {
   const { score, total } = location.state || { score: 0, total: 0 }; // Default if no state
 
   return (
-    <div>
+    <div className="results-container">
       <h2>Quiz Results</h2>
-      <p>Your Score: {score} / {total}</p>
-      
-      <button onClick={() => navigate("/")}>Go Home</button>
-      <button onClick={() => navigate("/quiz")}>Retake Quiz</button>
+      <p className="results-score">
+        Your Score: {score} / {total}
+      </p>
+
+      <div className="results-buttons">
+        <button onClick={() => navigate("/")}>Go Home</button>
+        <button onClick={() => navigate("/quiz")}>Retake Quiz</button>
+      </div>
     </div>
   );
 };

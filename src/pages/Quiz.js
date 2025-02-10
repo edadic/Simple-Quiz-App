@@ -1,3 +1,4 @@
+import "../styles/Quiz.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchQuizQuestions } from "../services/quizService";
@@ -34,18 +35,18 @@ const Quiz = () => {
   };
 
   return (
-    <div>
+    <div className="quiz-container">
       <h2>Quiz Page</h2>
       {questions.length > 0 ? (
-        <ul>
+        <ul className="quiz-questions">
           {questions.map((question, index) => (
-            <li key={index}>
+            <li key={index} className="quiz-question">
               <p>{question.question}</p>
-              <ul>
+              <ul className="quiz-options">
                 {Object.entries(question.answers).map(([key, answer]) =>
                   answer ? (
                     <li key={key}>
-                      <label>
+                      <label className="quiz-option-label">
                         <input
                           type="radio"
                           name={`question-${index}`}
@@ -66,7 +67,9 @@ const Quiz = () => {
         <p>Loading questions...</p>
       )}
 
-      <button onClick={handleSubmit}>Submit Quiz</button>
+      <button className="submit-button" onClick={handleSubmit}>
+        Submit Quiz
+      </button>
     </div>
   );
 };
