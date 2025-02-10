@@ -1,38 +1,72 @@
 .results-container {
-    max-width: 400px;
-    margin: auto;
+    max-width: 600px;
+    margin: 50px auto;
     padding: 20px;
-    text-align: center;
-    background: #fff3cd;
+    background: #f9f9f9;
     border-radius: 10px;
+    text-align: center;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   }
   
-  .results-container h2 {
+  .results-container h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .score-display {
+    background: #e6f7ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .score-display h2 {
+    font-size: 24px;
+    color: #007bff;
     margin-bottom: 10px;
-    color: #856404;
   }
   
-  .results-score {
-    font-size: 20px;
+  .score {
+    font-size: 40px;
     font-weight: bold;
+    color: #ff5722;
   }
   
-  .results-buttons {
-    margin-top: 15px;
+  .feedback-message {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
   }
   
-  .results-buttons button {
-    background: #28a745;
+  .results-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .retry-button,
+  .share-button {
+    padding: 12px 20px;
+    font-size: 16px;
     color: white;
-    padding: 10px;
-    margin: 5px;
+    background: #007bff;
     border: none;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
   }
   
-  .results-buttons button:hover {
-    background: #218838;
+  .retry-button:hover {
+    background: #0056b3;
+  }
+  
+  .share-button {
+    background: #28a745;
+  }
+  
+  .share-button:hover {
+    background: #1e7e34;
   }
   

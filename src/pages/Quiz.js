@@ -3,9 +3,20 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchQuizQuestions } from "../services/quizService";
 
+const ProgressBar = ({ current, total }) => {
+  const progress = (current / total) * 100;
+  return (
+    <div className="progress-bar">
+      <div className="progress" style={{ width: `${progress}%` }}></div>
+    </div>
+  );
+};
+
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(30);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,11 +27,34 @@ const Quiz = () => {
     getQuestions();
   }, []);
 
-  const handleAnswerSelect = (questionIndex, answerKey) => {
+  // Timer logic
+  useEffect(() => {
+    if (timeLeft === 0) {
+      moveToNextQuestion();
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const moveToNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setTimeLeft(30);
+    } else {
+      handleSubmit();
+    }
+  };
+
+  const handleAnswerSelect = (answerKey) => {
     setUserAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [questionIndex]: answerKey,
+      [currentQuestionIndex]: answerKey,
     }));
+    moveToNextQuestion();
   };
 
   const handleSubmit = () => {
@@ -34,42 +68,40 @@ const Quiz = () => {
     navigate("/results", { state: { score, total: questions.length } });
   };
 
+  if (questions.length === 0) {
+    return <p className="loading-text">Loading questions...</p>;
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+
   return (
     <div className="quiz-container">
-      <h2>Quiz Page</h2>
-      {questions.length > 0 ? (
-        <ul className="quiz-questions">
-          {questions.map((question, index) => (
-            <li key={index} className="quiz-question">
-              <p>{question.question}</p>
-              <ul className="quiz-options">
-                {Object.entries(question.answers).map(([key, answer]) =>
-                  answer ? (
-                    <li key={key}>
-                      <label className="quiz-option-label">
-                        <input
-                          type="radio"
-                          name={`question-${index}`}
-                          value={key}
-                          checked={userAnswers[index] === key}
-                          onChange={() => handleAnswerSelect(index, key)}
-                        />
-                        {answer}
-                      </label>
-                    </li>
-                  ) : null
-                )}
-              </ul>
-            </li>
-          ))}
+      <ProgressBar current={currentQuestionIndex + 1} total={questions.length} />
+      <div className="timer">Time Left: {timeLeft}s</div>
+      <div className="question-card">
+        <p className="quiz-question">{currentQuestion.question}</p>
+        <ul className="quiz-options">
+          {Object.entries(currentQuestion.answers).map(([key, answer]) =>
+            answer ? (
+              <li key={key} className="quiz-option-item">
+                <button
+                  onClick={() => handleAnswerSelect(key)}
+                  className={`quiz-option ${
+                    userAnswers[currentQuestionIndex] === key ? "selected" : ""
+                  }`}
+                >
+                  {answer}
+                </button>
+              </li>
+            ) : null
+          )}
         </ul>
-      ) : (
-        <p>Loading questions...</p>
+      </div>
+      {currentQuestionIndex === questions.length - 1 && (
+        <button onClick={handleSubmit} className="submit-button">
+          Submit Quiz
+        </button>
       )}
-
-      <button className="submit-button" onClick={handleSubmit}>
-        Submit Quiz
-      </button>
     </div>
   );
 };

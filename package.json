@@ -23,8 +23,10 @@
   "dependencies": {
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
+    "framer-motion": "^12.4.2",
     "postcss": "^8.5.1",
     "react": "^19.0.0",
+    "react-confetti": "^6.2.2",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
     "react-scripts": "^5.0.1",
