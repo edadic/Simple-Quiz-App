@@ -54,4 +54,4 @@ The **Quiz App** is a web-based quiz application that allows users to test their
 
 The app fetches quiz questions from the [QuizAPI](https://quizapi.io/). Ensure you have a valid API key and set it up in the `quizService.js` file.
 
-Example configuration in `quizService.js`:
+Example configuration in `quizService.js`.
